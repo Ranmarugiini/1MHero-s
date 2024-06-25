@@ -1,55 +1,134 @@
 ﻿#include "stdafx.h"
 #include "Player.h"
+#include <exception>
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+Player::Player()
+	: rectPos(400, 500), // 初期位置を指定
+	isJumping(false),
+	velocityY(0.0),
+	speed(300.0),
+	fixedY(500.0) // 地面のY座標
+{}
 
 void Player::Initialize()
-{// 四角形の初期位置を設定
-	isJumping = false;
+{
+	// 必要な初期化コードをここに記述
 }
 
 void Player::Update()
-{	// マウスカーソルのX座標を取得
+{
 	double mouseX = Cursor::PosF().x;
-
-	// 四角形の現在位置のX座標とマウスカーソルのX座標との差を計算
 	double directionX = mouseX - rectPos.x;
-
-	// X座標の方向ベクトルを計算（正規化）
 	double directionXNormalized = (directionX != 0) ? directionX / std::abs(directionX) : 0;
-
-	// X座標の更新（フレームごとの移動量を計算）
 	rectPos.x += directionXNormalized * speed * Scene::DeltaTime();
 
-	if (KeySpace.pressed() && !isJumping)
+	if (isJumping)
 	{
-		rectPos.y = -10.0;
-		isJumping = true;
-	}
-	if (MouseL.pressed())
-	{
-		Player::Attack();
-	}
-	// 画面端を探知して速度をゼロに設定
-	if (rectPos.x < 0)
-	{
-		rectPos.x = 0;
-	}
-	else if (position.x > 640) // 画面の幅を640
-	{
-		position.x = 640;
-		velocity.x = 0;
+		velocityY += gravity * Scene::DeltaTime();
+		rectPos.y += velocityY * Scene::DeltaTime();
 	}
 
-	if (position.y >= 400)
+	if (rectPos.y >= fixedY)
 	{
-		position.y = 400;
+		rectPos.y = fixedY;
 		isJumping = false;
+		velocityY = 0.0;
 	}
-	// 四角形を描画
-	RectF(rectPos, rectSize).draw(Palette::Skyblue);
+
+	if (MouseL.down() && !isJumping)
+	{
+		isJumping = true;
+		velocityY = -350.0;
+	}
+
+	if (MouseL.down())
+	{
+		Attack();
+	}
+
+	for (auto& bullet : bullets)
+	{
+		bullet.update(Scene::DeltaTime());
+	}
+
+	bullets.remove_if([](const Bullet& bullet)
+	{
+		return bullet.isOffScreen();
+	});
+
+	HitCheck();
+	if (NiinumaItika == 5)
+	{
+
+		// 左上位置 (20, 20) からテキストを描く
+		font(U"Game Clear!").draw(20, 20);
+		std::this_thread::sleep_for(std::chrono::seconds(3));
+		//std::terminate();
+	};
+	Draw();
 }
 
 void Player::Attack()
 {
+	Vec2 BulletPos = rectPos;
+	BulletPos.y += 25;
+	Vec2 target = Cursor::PosF();
+	Vec2 start = BulletPos;
+	Vec2 direction = (target - start).setLength(300);
+	bullets.push_back(Bullet(start, direction));
+}
 
+void Player::Draw()
+{
+	RectF(rectPos.x, rectPos.y, 40, 40).draw(Palette::Green);
+	OZworld.resized(60).drawAt(rectPos.x+20, rectPos.y+10);
+	
 
+	for (const auto& bullet : bullets)
+	{
+		bullet.draw();
+	}
+
+	for (const auto& enemy : enemies)
+	{
+		enemy.draw();
+	}
+}
+
+void Player::HitCheck()
+{
+	for (auto it = bullets.begin(); it != bullets.end();)
+	{
+		bool hit = false;
+		for (auto enemyIt = enemies.begin(); enemyIt != enemies.end();)
+		{
+			if (enemyIt->hitBy(*it))
+			{
+				enemyIt = enemies.erase(enemyIt);
+				hit = true;
+				NiinumaItika++;
+			}
+			else
+			{
+				++enemyIt;
+			}
+		}
+
+		if (hit)
+		{
+			it = bullets.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
+void Player::addEnemy(const Vec2& pos)
+{
+	enemies.push_back(Enemy(pos));
 }
