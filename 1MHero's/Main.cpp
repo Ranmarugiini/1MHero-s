@@ -5,7 +5,14 @@
 #include <thread>
 #include <chrono>
 void Main()
-{
+{// 警告を無効にする
+	Profiler::EnableAssetCreationWarning(false);
+
+	TextureAsset::Register(U"OZworld", U"example\\OZworld.png");
+	TextureAsset::Register(U"ENEMY", U"example\\唾奇.png");
+	TextureAsset::Register(U"SHOT1", U"example\\Dragon.png");
+	TextureAsset::Register(U"SHOT2", U"example\\6.png");
+	
 	// 基本サイズ 50 のフォントを作成
 	const Font font{ 50 };
 	Player player;

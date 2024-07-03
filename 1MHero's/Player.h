@@ -6,15 +6,14 @@
 class Player
 {
 public:
-	// プレイヤーの画像
 	const Texture OZworld{ U"example/OZworld.png" };
-
+	Texture Tex;
 	Player(); // コンストラクタの宣言
 	void Initialize();
 	void Update();
 	void Draw();
 	void addEnemy(const Vec2& pos);
-	int NiinumaItika = 0;
+	int KillCount = 0;
 	// 基本サイズ 50 のフォントを作成
 	const Font font{ 50 };
 	Array<Bullet> bullets;

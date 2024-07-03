@@ -15,6 +15,7 @@ Player::Player()
 
 void Player::Initialize()
 {
+
 	// 必要な初期化コードをここに記述
 }
 
@@ -60,7 +61,7 @@ void Player::Update()
 	});
 
 	HitCheck();
-	if (NiinumaItika == 5)
+	if (KillCount == 5)
 	{
 
 		// 左上位置 (20, 20) からテキストを描く
@@ -84,8 +85,8 @@ void Player::Attack()
 void Player::Draw()
 {
 	RectF(rectPos.x, rectPos.y, 40, 40).draw(Palette::Green);
-	OZworld.resized(60).drawAt(rectPos.x+20, rectPos.y+10);
-	
+	//OZworld.resized(60).drawAt(rectPos.x + 20, rectPos.y + 10);
+	TextureAsset(U"OZworld").resized(60).drawAt(rectPos.x + 20, rectPos.y + 10);
 
 	for (const auto& bullet : bullets)
 	{
@@ -109,7 +110,7 @@ void Player::HitCheck()
 			{
 				enemyIt = enemies.erase(enemyIt);
 				hit = true;
-				NiinumaItika++;
+				KillCount++;
 			}
 			else
 			{
@@ -119,7 +120,9 @@ void Player::HitCheck()
 
 		if (hit)
 		{
-			it = bullets.erase(it);
+			// bullets.release();
+
+			it=bullets.erase(it);
 		}
 		else
 		{

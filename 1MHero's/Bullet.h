@@ -5,7 +5,7 @@ class Bullet
 {
 public:
 	// Siv3D くん（Siv3D の公式マスコットキャラクター）の画像
-	const Texture Dragon{ U"example/Dragon.png" };
+	//const Texture Dragon{ U"example/Dragon.png" };
 	Bullet(Vec2 pos, Vec2 vel);
 
 	// コピーコンストラクタとコピー代入演算子を削除

@@ -10,13 +10,14 @@ void Bullet::update(double deltaTime)
 
 void Bullet::draw() const
 {
-	Dragon.mirrored().drawAt(m_position.x, m_position.y);
-	Circle(m_position, 5).draw(Palette::Red);
+	//Dragon.mirrored().drawAt(m_position.x, m_position.y);
+	//Circle(m_position, 5).draw(Palette::Red);
+	TextureAsset(U"SHOT1").mirrored().resized(70).drawAt(m_position);
 }
 
 bool Bullet::isOffScreen() const
 {
-	return !RectF(Scene::Rect()).intersects(Circle(m_position, 5));
+	return !RectF(Scene::Rect()).intersects(Circle(m_position, 20));
 }
 
 Vec2 Bullet::getPosition() const
