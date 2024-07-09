@@ -42,7 +42,7 @@ void Player::Update()
 	if (MouseL.down() && !isJumping)
 	{
 		isJumping = true;
-		velocityY = -350.0;
+		velocityY = -550.0;
 	}
 
 	if (MouseL.down())
@@ -64,8 +64,8 @@ void Player::Update()
 	if (KillCount == 5)
 	{
 
-		// 左上位置 (20, 20) からテキストを描く
-		font(U"Game Clear!").draw(20, 20);
+		font(U"GameClrar").drawAt(Scene::Center(), Palette::Skyblue);
+
 		std::this_thread::sleep_for(std::chrono::seconds(3));
 		//std::terminate();
 	};
@@ -86,7 +86,7 @@ void Player::Draw()
 {
 	RectF(rectPos.x, rectPos.y, 40, 40).draw(Palette::Green);
 	//OZworld.resized(60).drawAt(rectPos.x + 20, rectPos.y + 10);
-	TextureAsset(U"OZworld").resized(60).drawAt(rectPos.x + 20, rectPos.y + 10);
+	TextureAsset(U"OZworld").resized(100).drawAt(rectPos.x + 20, rectPos.y + 10);
 
 	for (const auto& bullet : bullets)
 	{
@@ -130,6 +130,12 @@ void Player::HitCheck()
 		}
 	}
 }
+
+bool Player::HitBy(const Bullet& bullet)const
+{
+
+}
+
 
 void Player::addEnemy(const Vec2& pos)
 {

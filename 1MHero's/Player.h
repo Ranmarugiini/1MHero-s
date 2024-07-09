@@ -21,7 +21,7 @@ public:
 private:
 	void Attack();
 	void HitCheck();
-
+	bool HitBy(const Bullet& bullet) const;
 	Vec2 rectPos; // プレイヤーの位置
 	const Rect MRect{ 0, 0, 100, 100 }; // プレイヤーの矩形サイズを指定
 

@@ -12,7 +12,7 @@ void Bullet::draw() const
 {
 	//Dragon.mirrored().drawAt(m_position.x, m_position.y);
 	//Circle(m_position, 5).draw(Palette::Red);
-	TextureAsset(U"SHOT1").mirrored().resized(70).drawAt(m_position);
+	TextureAsset(U"SHOT1").mirrored().resized(100).drawAt(m_position);
 }
 
 bool Bullet::isOffScreen() const

@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Enemy.h"
 Enemy::Enemy(Vec2 pos)
-	: m_position(pos) {}
+	: m_position(pos) ,ATTACK_pos(pos){}
 
 void Enemy::update(double deltaTime)
 {
@@ -12,7 +12,7 @@ void Enemy::update(double deltaTime)
 void Enemy::draw() const
 {
 	//RectF(m_position, 40, 40).draw(Palette::Blue);
-	TextureAsset(U"ENEMY").resized(60).drawAt(m_position.x+20,m_position.y+10);
+	TextureAsset(U"ENEMY").resized(100).drawAt(m_position.x+20,m_position.y+10);
 }
 
 bool Enemy::hitBy(const Bullet& bullet) const

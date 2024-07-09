@@ -12,6 +12,7 @@ public:
 
 private:
 	Vec2 m_position;
+	Vec2 ATTACK_pos;
 };
 
 
